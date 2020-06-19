@@ -19,7 +19,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
-/** video grafikart 16:55 min
+/** video grafikart 23:55 min
  * @ORM\Entity
  * @ORM\Table(name="symfony_demo_comment")
  * 
@@ -31,8 +31,12 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *      },
  *      paginationItemsPerPage=2,
  *      normalizationContext={"groups"={"read:comment"}},
- *      collectionOperations = {"GET"},
- *      itemOperations = {"GET"}
+ *      collectionOperations = {"get", "post"},
+ *      itemOperations = {
+ *          "GET" = {
+ *              "normalization_context"={"groups"={"read:comment", "read:full:comment"}}
+ *          }
+ *      }
  * )
  * 
  * @ApiFilter(
@@ -66,6 +70,7 @@ class Comment
      *
      * @ORM\ManyToOne(targetEntity="Post", inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"read:full:comment"})
      */
     private $post;
 
